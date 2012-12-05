@@ -105,38 +105,48 @@ class Winner
 	end
 end
 
+class Game
+	def self.start
+      Game.new.start
+	end
 
-loop do puts "Hi, welcome to my Blackjack table!"
-    loop do puts "Let's start a new game."
-    	puts 
-        sleep 2
-    	player_hand=Deck.new
-    	puts "Your hand total: #{player_hand.deal}"
-        sleep 2
-    	dealer_hand=Deck.new
-    	puts "Dealer's flipped card: #{dealer_hand.get_card}"
-    	sleep 2
-    	win_check = Winner.new(player_hand.deal, 0)
-    	blackjack = win_check.blackjack?
-        if blackjack == true
-            break
-        end
+	def start
+		loop do puts "Hi, welcome to my Blackjack table!"
+		    loop do puts "Let's start a new game."
+		    	puts 
+		        sleep 2
+		    	player_hand=Deck.new
+		    	puts "Your hand total: #{player_hand.deal}"
+		        sleep 2
+		    	dealer_hand=Deck.new
+		    	puts "Dealer's flipped card: #{dealer_hand.get_card}"
+		    	sleep 2
+		    	win_check = Winner.new(player_hand.deal, 0)
+		    	blackjack = win_check.blackjack?
+		        if blackjack == true
+		            break
+		        end
 
-    	player=Player.new(player_hand.deal)
-    	final_player_hand = player.player_hand_method
-    	
+		    	player=Player.new(player_hand.deal)
+		    	final_player_hand = player.player_hand_method
+		    	
+		    	win_check = Winner.new(final_player_hand, 0)
+		    	blackjack = win_check.blackjack?
+		        if blackjack == true
+		            break
+		        elsif final_player_hand <= 21
+		    		dealer=Dealer.new(dealer_hand.get_card)
+		    		final_dealer_hand = dealer.dealer_hand_method
+		    	end
+		        sleep 2
+		    	declare_winner=Winner.new(final_player_hand, final_dealer_hand)
+		    	declare_winner.champion
+		    end
 
-    	if final_player_hand == 21
-            puts "Blackjack you win!"
-            break
-        elsif final_player_hand <= 21
-    		dealer=Dealer.new(dealer_hand.get_card)
-    		final_dealer_hand = dealer.dealer_hand_method
-    	end
-        sleep 2
-    	declare_winner=Winner.new(final_player_hand, final_dealer_hand)
-    	declare_winner.champion
-    end
-
-    sleep 5
+		    sleep 5
+		end
+	end
 end
+
+Game.start
+
